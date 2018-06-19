@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/db7.php';
+require_once __DIR__ . '/../db_php_7/db7.php';
 
 if(!isset($GLOBALS['db'])){
     $db = new DB();
