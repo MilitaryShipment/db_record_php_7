@@ -112,7 +112,7 @@ abstract class Record implements RecordBehavior{
             if($key == 'created_date' || $key == 'updated_date'){
                 $upData[$key] = date("m/d/Y H:i:s");
             }elseif(!is_null($this->$key) && !empty($this->$key)){
-                $upData[$key] = $this->$key;
+                $upData[$key] = is_array($this->$key) ? $this->_toString($this->$key) : $this->$key;
             }
         }
         unset($upData['id']);
@@ -135,7 +135,7 @@ abstract class Record implements RecordBehavior{
             if($key == 'updated_date'){
                 $upData[$key] = date("m/d/Y H:i:s");
             }elseif(!is_null($this->$key) && !empty($this->$key)){
-                $upData[$key] = $this->$key;
+                $upData[$key] = is_array($this->$key) ? $this->_toString($this->$key) : $this->$key;
             }
         }
         if(isset($upData['created_date'])){
@@ -162,5 +162,11 @@ abstract class Record implements RecordBehavior{
             $this->$key = $value;
         }
         return $this;
+    }
+    private function _toArray($csvStr){
+        return explode(',',$csvStr);
+    }
+    private function _toString($arr){
+        return implode(',',$arr);
     }
 }
