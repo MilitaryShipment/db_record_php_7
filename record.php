@@ -77,7 +77,7 @@ abstract class Record implements RecordBehavior{
             }
             while($row = mysqli_fetch_assoc($results)){
                 foreach($row as $key=>$value){
-                    $this->$key = $value;
+                    $this->$key = is_array($this->$key) ? $this->_toArray($this->$key) : $this->$key = $value;
                 }
             }
         }
