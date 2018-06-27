@@ -66,6 +66,9 @@ abstract class Record implements RecordBehavior{
                 foreach($row as $key=>$value){
                     if($key == 'guid' && !is_null($value)){
                         $this->$key = $this->_mssqlGuidStr($value);
+                    }elseif((int)$key[0]){
+                        $newKey = "_" . $key;
+                        $this->$newKey = $value;
                     }else{
                         $this->$key = $value;
                     }
@@ -111,6 +114,8 @@ abstract class Record implements RecordBehavior{
             $key = $obj->name;
             if($key == 'created_date' || $key == 'updated_date'){
                 $upData[$key] = date("m/d/Y H:i:s");
+            }elseif($key[0] == '_' && (!empty($this->$key) || is_null($this->$key))){
+                $upData[substr($key,1)] = $this->$key;
             }elseif(!is_null($this->$key) && !empty($this->$key)){
                 $upData[$key] = is_array($this->$key) ? $this->_toString($this->$key) : $this->_cleanText($this->$key);
             }
@@ -134,6 +139,8 @@ abstract class Record implements RecordBehavior{
             $key = $obj->name;
             if($key == 'updated_date'){
                 $upData[$key] = date("m/d/Y H:i:s");
+            }elseif($key[0] == '_' && (!empty($this->$key) || is_null($this->$key))){
+                $upData[substr($key,1)] = $this->$key;
             }elseif(!is_null($this->$key) && !empty($this->$key)){
                 $upData[$key] = is_array($this->$key) ? $this->_toString($this->$key) : $this->$key;
             }
